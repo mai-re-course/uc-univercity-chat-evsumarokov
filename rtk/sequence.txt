@@ -1,0 +1,40 @@
+@startuml
+skinparam backgroundColor #EEEBDC
+skinparam handwritten true
+skinparam sequence {
+ArrowColor DeepSkyBlue
+LifeLineBorderColor blue
+LifeLineBackgroundColor #A9DCDF
+ActorFontColor DeepSkyBlue
+ActorFontSize 17
+ActorFontName Aapex
+}
+
+actor User as A 
+boundary Browser as B
+entity Server as C
+activate B
+A -> B: << EnterRequest >>
+B -> B: Internal call
+activate B #DarkSalmon
+deactivate B
+activate C
+alt requstef URL is not in the cache
+B -> C: DNS query
+end
+
+B -> C: IniTcpConnection()
+activate C #Blue
+deactivate C
+B -> C: SendHTTTPReq()
+activate C #Blue
+deactivate C
+C --> C: SerProc()
+activate C #Blue
+deactivate C
+C --> B: SendHTTTPResp()
+deactivate C
+B --> A: ShowContent()
+deactivate B
+
+@enduml

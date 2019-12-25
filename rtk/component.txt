@@ -1,0 +1,35 @@
+@startuml
+skinparam backgroundColor #d3cdd4
+skinparam handwritten true
+skinparam sequence {
+ArrowColor #c32cd1
+LifeLineBorderColor blue
+LifeLineBackgroundColor #a9dfb0
+}
+() "data for users"
+node "Frontend" {
+[Browser]-left->() "data for users"
+[Browser]-->[cache]
+[cache]-->() "HTTP"
+[Browser]..>() "HTTP":use
+}
+[Browser]-->() " "
+cloud "DNS-servers-provider" {
+[DNS servers provider]
+}
+() " "<-left-[DNS servers provider] 
+rectangle "DNS servers" {
+[DNS servers provider]-down->()"1"
+()"1"<-right-[Root name server]
+[Root name server]-right->()"2"
+()"2"<-right-[Domain name server]
+[Domain name server]-right->()"3"
+()"3"<-[Name server]
+[Name server]->()"4"
+[Records DNS]-down->()"4"
+()"1"<--[Records DNS]
+}
+rectangle Backend {
+ ()"HTTP"<.down.[Web server site]
+}
+@enduml
